@@ -24,23 +24,23 @@ class MarvelComics(object):
     def __init__(self, comics):
         self.comics = comics
 
-    def get_characters(self):
-        marvel_characters = self.comics
-        print(marvel_characters)
-        if marvel_characters:
-            url = 'https://developer.marvel.com/docs#!/public/getComicCharacterCollection_get_8?ts=1&apikey=df9907985e1fe414d45b38743f3d5e989a27b126&hash=55952202b6ba744d18c4da43726a2c10'
+    def get_new_characters(self):
+        characters = self.comics
+        print(characters)
+        if characters:
+            url = 'https://developer.marvel.com/docs#!/public/getComicCharacterCollection_get_8?ts=1&apikey=df9907985e1fe414d45b38743f3d5e989a27b126&hash=55952202b6ba744d18c4da43726a2c10='+characters+'&pageSize=10'
 
             call = requests.get(url)
             print('status:', call.status_code)
             response_data = call.json()
 
-            top_characters = response_data['characters']
+            marvel_characters = response_data['characters']
 
-        y = top_characters
+        y = marvel_characters
         for character in y:
             character_collection = {}
             result_characters = {'id': character['id'], 'Name': character['name'],
-                                 'Description': character['description'], 'Image': character['thumbnail']}
+                                 'Description': character['description']}
             character_collection.update(result_characters)
             print(character_collection, "\n")
             return character_collection
@@ -50,10 +50,10 @@ if __name__ == '__main__':
     print('Welcome to Marvel Comics')
     question = [
         {
-            'type': 'super heroes',
+            'type': 'string',
             'name': 'comic_heroes',
             'message': 'who is your favorite comic book character',
-            'choices': ['mutants', 'deities', 'alien beings', 'altered beings']
+            'choices': ['comics', 'stories', 'events', 'series']
         }
     ]
 
@@ -61,4 +61,4 @@ if __name__ == '__main__':
 
     user_response = response['comic_heroes']
     user_response_obj = MarvelComics(user_response)
-    print(user_response_obj.get_characters())
+    print(user_response_obj.get_new_characters())
